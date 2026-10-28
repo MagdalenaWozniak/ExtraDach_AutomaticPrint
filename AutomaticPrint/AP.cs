@@ -1,0 +1,117 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Hydra;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+using AutomaticPrint.API;
+
+[assembly: CallbackAssemblyDescription("Automatyczne drukowanie KP/KW", "Automatyczne drukowanie KP/KW", "One Support", "1.1", "2014.1", "29-06-2021")]
+namespace AutomaticPrint
+{
+
+
+    #region KW
+    [SubscribeProcedure(Procedures.KAZEdycja, "Wydrukuj dokument KW/KP")]
+    public class ACP_KP : Callback
+    {
+        bool documentPrint = false;
+        string kaz_gidtyp = "0", kaz_gidnumer = "0", kaz_rp = "";        
+        ClaWindow  saveButton;
+        short ThreadID;
+        public override void Init()
+        {
+            AddSubscription(true, 0, Events.JustAfterWindowOpening, new TakeEventDelegate(Just));
+            AddSubscription(false, 0, Events.OpenWindow, new TakeEventDelegate(OnSave));
+
+            AddFileActionSubscription(false, FileActionTypes.InsertAction, new FileActionDelegate(UpdateKpKw));
+            AddFileActionSubscription(false, FileActionTypes.UpdateAction, new FileActionDelegate(UpdateKpKw));
+
+        }
+
+        private bool Just(Procedures ProcID, int ControlID, Events Event)
+        {
+            saveButton = GetWindow().AllChildren["?Cli_Zapisz"];
+            return (true);
+        }
+
+        public override void Cleanup() { }
+
+        private bool OnSave(Procedures ProcID, int ControlID, Events Event)
+        {
+            ThreadID = GetCallbackThread();
+            kaz_gidtyp = Zapisy.KAZ_GIDTyp.ToString();
+            kaz_gidnumer = Zapisy.KAZ_GIDNumer.ToString();
+            kaz_rp = Zapisy.KAZ_RP.ToString();
+
+            documentPrint = false;
+
+            AddSubscription(false, saveButton.Id, Events.Accepted, new TakeEventDelegate(OnAccepted));
+
+            return (true);
+        }
+
+        private bool OnAccepted(Procedures ProcID, int ControlID, Events Event)
+        {
+            documentPrint = true;
+            return (true);
+        }
+
+
+        private bool UpdateKpKw(Procedures ProcID, GID Gid, ADODB._Recordset Recordset)
+        {
+            if (documentPrint)
+            {
+                ApiOperations apiOperations = new ApiOperations();
+                if (kaz_rp == "1")
+                    apiOperations.PrintDocument((int)Zapisy.KAZ_GIDTyp, (int)Zapisy.KAZ_GIDFirma, (int)Zapisy.KAZ_GIDNumer, (int)Zapisy.KAZ_RP, documentPrint, false, "KW", 0, 0, 0, 0);
+                else
+                    apiOperations.PrintDocument((int)Zapisy.KAZ_GIDTyp, (int)Zapisy.KAZ_GIDFirma, (int)Zapisy.KAZ_GIDNumer, (int)Zapisy.KAZ_RP, documentPrint, false, "KP", 0, 0, 0, 0);
+            }
+
+            return (true);
+        }
+
+        public string MO_WykonajZapytanie(string command_str)
+        {
+            string result = "";
+
+
+            SqlCommand SelectCommand;
+            SqlDataReader reader;
+            SelectCommand = new SqlCommand(command_str);
+            try
+            {
+                SelectCommand.Connection = Runtime.ActiveRuntime.Repository.Connection;
+                SelectCommand.CommandTimeout = 0;
+                SelectCommand.Connection.Open();
+                reader = SelectCommand.ExecuteReader();
+                try
+                {
+                    while (reader.Read())
+                    {
+                        result = reader[0].ToString();
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
+
+                SelectCommand.Connection.Close();
+            }
+            catch (Exception ex)
+            {
+                SelectCommand.Connection.Close();
+                Runtime.WindowController.UnlockThread();
+                MessageBox.Show("Błąd podczas wykonania zapytania " + command_str + ".\nKomunikat błędu:" + ex.Message, "BŁĄD", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Runtime.WindowController.LockThread();
+
+            }
+            return result;
+        }
+    }
+    #endregion
+}

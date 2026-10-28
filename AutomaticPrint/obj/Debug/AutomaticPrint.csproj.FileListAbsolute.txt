@@ -1,0 +1,16 @@
+C:\TEMP\AutomaticPrint\AutomaticPrint\bin\Debug\AutomaticPrint.dll
+C:\TEMP\AutomaticPrint\AutomaticPrint\bin\Debug\AutomaticPrint.pdb
+C:\TEMP\AutomaticPrint\AutomaticPrint\bin\Debug\adodb.dll
+C:\TEMP\AutomaticPrint\AutomaticPrint\bin\Debug\CdnHydra.dll
+C:\TEMP\AutomaticPrint\AutomaticPrint\obj\Debug\AutomaticPrint.dll
+C:\TEMP\AutomaticPrint\AutomaticPrint\obj\Debug\AutomaticPrint.pdb
+C:\TEMP\AutomaticPrint\AutomaticPrint\bin\Debug\cdn_api20163.net.dll
+C:\Users\magdaw\Documents\ExtraDach\AutomaticPrint\AutomaticPrint\bin\Debug\AutomaticPrint.dll
+C:\Users\magdaw\Documents\ExtraDach\AutomaticPrint\AutomaticPrint\bin\Debug\AutomaticPrint.pdb
+C:\Users\magdaw\Documents\ExtraDach\AutomaticPrint\AutomaticPrint\bin\Debug\adodb.dll
+C:\Users\magdaw\Documents\ExtraDach\AutomaticPrint\AutomaticPrint\bin\Debug\cdn_api20202.net.dll
+C:\Users\magdaw\Documents\ExtraDach\AutomaticPrint\AutomaticPrint\obj\Debug\AutomaticPrint.csprojAssemblyReference.cache
+C:\Users\magdaw\Documents\ExtraDach\AutomaticPrint\AutomaticPrint\obj\Debug\AutomaticPrint.csproj.CoreCompileInputs.cache
+C:\Users\magdaw\Documents\ExtraDach\AutomaticPrint\AutomaticPrint\obj\Debug\AutomaticPrint.csproj.CopyComplete
+C:\Users\magdaw\Documents\ExtraDach\AutomaticPrint\AutomaticPrint\obj\Debug\AutomaticPrint.dll
+C:\Users\magdaw\Documents\ExtraDach\AutomaticPrint\AutomaticPrint\obj\Debug\AutomaticPrint.pdb
